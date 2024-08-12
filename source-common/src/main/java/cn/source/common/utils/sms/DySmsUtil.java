@@ -22,28 +22,12 @@ public class DySmsUtil {
 
     private final static Logger logger= LoggerFactory.getLogger(DySmsUtil.class);
       //sms短信平台
-//    public static boolean sendSms(String phone, JSONObject paramJson,String accessKeyId
-//            ,String accessKeySecret,String accessKeytemplate){
-//        boolean result = true;
-//        String url = "http://api.sms.cn/sms";
-//        try {
-//            String str = HttpUtils.sendPost(url,
-//                    "ac=send&uid=" +accessKeyId+
-//                            "&pwd=" +accessKeySecret+
-//                            "&template=" +accessKeytemplate+
-//                            "&mobile="+phone+"&content="+paramJson);
-//            logger.info("短信接口返回的数据----------------"+str);
-//        }catch (Exception e){
-//            result = true;
-//            logger.info("短信接口返回异常----------------"+e.getMessage());
-//        }
-//        return result;
+
 //    }
     //腾讯云短信平台
     public static boolean sendSms(String phone, JSONObject paramJson,String accessKeyId
             ,String accessKeySecret,String accessKeytemplate){
         boolean result = true;
-        String url = "sms.tencentcloudapi.com";
         try {
 
         }catch (Exception e){
