@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.source.system.mapper.IhelpGoodsapplyMapper">
+    
+    <resultMap type="IhelpGoodsapply" id="IhelpGoodsapplyResult">
+        <result property="id"    column="id"    />
+        <result property="addtime"    column="addtime"    />
+        <result property="applyno"    column="applyno"    />
+        <result property="goodsname"    column="goodsname"    />
+        <result property="goodskind"    column="goodskind"    />
+        <result property="number"    column="number"    />
+        <result property="applydate"    column="applydate"    />
+        <result property="applyreason"    column="applyreason"    />
+        <result property="account"    column="account"    />
+        <result property="name"    column="name"    />
+        <result property="isexamine"    column="isexamine"    />
+        <result property="examreply"    column="examreply"    />
+    </resultMap>
+
+    <sql id="selectIhelpGoodsapplyVo">
+        select id, addtime, applyno, goodsname, goodskind, number, applydate, applyreason, account, name, isexamine, examreply from ihelp_goodsapply
+    </sql>
+
+    <select id="selectIhelpGoodsapplyList" parameterType="IhelpGoodsapply" resultMap="IhelpGoodsapplyResult">
+        <include refid="selectIhelpGoodsapplyVo"/>
+        <where>  
+            <if test="goodsname != null  and goodsname != ''"> and goodsname like concat('%', #{goodsname}, '%')</if>
+            <if test="goodskind != null  and goodskind != ''"> and goodskind = #{goodskind}</if>
+            <if test="applydate != null "> and applydate = #{applydate}</if>
+            <if test="applyreason != null  and applyreason != ''"> and applyreason = #{applyreason}</if>
+            <if test="account != null  and account != ''"> and account = #{account}</if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectIhelpGoodsapplyById" parameterType="Long" resultMap="IhelpGoodsapplyResult">
+        <include refid="selectIhelpGoodsapplyVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertIhelpGoodsapply" parameterType="IhelpGoodsapply">
+        insert into ihelp_goodsapply
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="addtime != null">addtime,</if>
+            <if test="applyno != null">applyno,</if>
+            <if test="goodsname != null and goodsname != ''">goodsname,</if>
+            <if test="goodskind != null and goodskind != ''">goodskind,</if>
+            <if test="number != null">number,</if>
+            <if test="applydate != null">applydate,</if>
+            <if test="applyreason != null">applyreason,</if>
+            <if test="account != null">account,</if>
+            <if test="name != null">name,</if>
+            <if test="isexamine != null">isexamine,</if>
+            <if test="examreply != null">examreply,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="addtime != null">#{addtime},</if>
+            <if test="applyno != null">#{applyno},</if>
+            <if test="goodsname != null and goodsname != ''">#{goodsname},</if>
+            <if test="goodskind != null and goodskind != ''">#{goodskind},</if>
+            <if test="number != null">#{number},</if>
+            <if test="applydate != null">#{applydate},</if>
+            <if test="applyreason != null">#{applyreason},</if>
+            <if test="account != null">#{account},</if>
+            <if test="name != null">#{name},</if>
+            <if test="isexamine != null">#{isexamine},</if>
+            <if test="examreply != null">#{examreply},</if>
+         </trim>
+    </insert>
+
+    <update id="updateIhelpGoodsapply" parameterType="IhelpGoodsapply">
+        update ihelp_goodsapply
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="addtime != null">addtime = #{addtime},</if>
+            <if test="applyno != null">applyno = #{applyno},</if>
+            <if test="goodsname != null and goodsname != ''">goodsname = #{goodsname},</if>
+            <if test="goodskind != null and goodskind != ''">goodskind = #{goodskind},</if>
+            <if test="number != null">number = #{number},</if>
+            <if test="applydate != null">applydate = #{applydate},</if>
+            <if test="applyreason != null">applyreason = #{applyreason},</if>
+            <if test="account != null">account = #{account},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="isexamine != null">isexamine = #{isexamine},</if>
+            <if test="examreply != null">examreply = #{examreply},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteIhelpGoodsapplyById" parameterType="Long">
+        delete from ihelp_goodsapply where id = #{id}
+    </delete>
+
+    <delete id="deleteIhelpGoodsapplyByIds" parameterType="String">
+        delete from ihelp_goodsapply where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.source.system.mapper.HelpFeatureMapper">
+    
+    <resultMap type="HelpFeature" id="HelpFeatureResult">
+        <result property="id"    column="id"    />
+        <result property="helpId"    column="help_id"    />
+        <result property="feature"    column="feature"    />
+    </resultMap>
+
+    <sql id="selectHelpFeatureVo">
+        select id, help_id, feature from help_feature
+    </sql>
+
+    <select id="selectHelpFeatureList" parameterType="HelpFeature" resultMap="HelpFeatureResult">
+        <include refid="selectHelpFeatureVo"/>
+        <where>  
+            <if test="helpId != null "> and help_id = #{helpId}</if>
+            <if test="feature != null  and feature != ''"> and feature = #{feature}</if>
+        </where>
+    </select>
+    
+    <select id="selectHelpFeatureById" parameterType="Long" resultMap="HelpFeatureResult">
+        <include refid="selectHelpFeatureVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertHelpFeature" parameterType="HelpFeature" useGeneratedKeys="true" keyProperty="id">
+        insert into help_feature
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="helpId != null">help_id,</if>
+            <if test="feature != null">feature,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="helpId != null">#{helpId},</if>
+            <if test="feature != null">#{feature},</if>
+         </trim>
+    </insert>
+
+    <update id="updateHelpFeature" parameterType="HelpFeature">
+        update help_feature
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="helpId != null">help_id = #{helpId},</if>
+            <if test="feature != null">feature = #{feature},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteHelpFeatureById" parameterType="Long">
+        delete from help_feature where id = #{id}
+    </delete>
+
+    <delete id="deleteHelpFeatureByIds" parameterType="String">
+        delete from help_feature where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

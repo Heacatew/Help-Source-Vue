@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.source.system.mapper.IhelpVolunteerMapper">
+    
+    <resultMap type="IhelpVolunteer" id="IhelpVolunteerResult">
+        <result property="id"    column="id"    />
+        <result property="addtime"    column="addtime"    />
+        <result property="volunacc"    column="volunacc"    />
+        <result property="password"    column="password"    />
+        <result property="volunname"    column="volunname"    />
+        <result property="year"    column="year"    />
+        <result property="gender"    column="gender"    />
+        <result property="phone"    column="phone"    />
+        <result property="picture"    column="picture"    />
+    </resultMap>
+
+    <sql id="selectIhelpVolunteerVo">
+        select id, addtime, volunacc, password, volunname, year, gender, phone, picture from ihelp_volunteer
+    </sql>
+
+    <select id="selectIhelpVolunteerList" parameterType="IhelpVolunteer" resultMap="IhelpVolunteerResult">
+        <include refid="selectIhelpVolunteerVo"/>
+        <where>  
+            <if test="volunacc != null  and volunacc != ''"> and volunacc = #{volunacc}</if>
+            <if test="volunname != null  and volunname != ''"> and volunname like concat('%', #{volunname}, '%')</if>
+            <if test="phone != null  and phone != ''"> and phone = #{phone}</if>
+        </where>
+    </select>
+    
+    <select id="selectIhelpVolunteerById" parameterType="Long" resultMap="IhelpVolunteerResult">
+        <include refid="selectIhelpVolunteerVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertIhelpVolunteer" parameterType="IhelpVolunteer">
+        insert into ihelp_volunteer
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="addtime != null">addtime,</if>
+            <if test="volunacc != null and volunacc != ''">volunacc,</if>
+            <if test="password != null and password != ''">password,</if>
+            <if test="volunname != null and volunname != ''">volunname,</if>
+            <if test="year != null">year,</if>
+            <if test="gender != null">gender,</if>
+            <if test="phone != null and phone != ''">phone,</if>
+            <if test="picture != null">picture,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="addtime != null">#{addtime},</if>
+            <if test="volunacc != null and volunacc != ''">#{volunacc},</if>
+            <if test="password != null and password != ''">#{password},</if>
+            <if test="volunname != null and volunname != ''">#{volunname},</if>
+            <if test="year != null">#{year},</if>
+            <if test="gender != null">#{gender},</if>
+            <if test="phone != null and phone != ''">#{phone},</if>
+            <if test="picture != null">#{picture},</if>
+         </trim>
+    </insert>
+
+    <update id="updateIhelpVolunteer" parameterType="IhelpVolunteer">
+        update ihelp_volunteer
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="addtime != null">addtime = #{addtime},</if>
+            <if test="volunacc != null and volunacc != ''">volunacc = #{volunacc},</if>
+            <if test="password != null and password != ''">password = #{password},</if>
+            <if test="volunname != null and volunname != ''">volunname = #{volunname},</if>
+            <if test="year != null">year = #{year},</if>
+            <if test="gender != null">gender = #{gender},</if>
+            <if test="phone != null and phone != ''">phone = #{phone},</if>
+            <if test="picture != null">picture = #{picture},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteIhelpVolunteerById" parameterType="Long">
+        delete from ihelp_volunteer where id = #{id}
+    </delete>
+
+    <delete id="deleteIhelpVolunteerByIds" parameterType="String">
+        delete from ihelp_volunteer where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

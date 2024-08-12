@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.source.system.mapper.HelpUserinfoMapper">
+    
+    <resultMap type="HelpUserinfo" id="HelpUserinfoResult">
+        <result property="id"    column="id"    />
+        <result property="address"    column="address"    />
+        <result property="ownerName"    column="owner_name"    />
+        <result property="owerPhone"    column="ower_phone"    />
+        <result property="longitude"    column="longitude"    />
+        <result property="latitude"    column="latitude"    />
+        <result property="villageId"    column="village_id"    />
+        <result property="villageName"    column="village_name"    />
+        <result property="askType"    column="ask_type"    />
+        <result property="stepType"    column="step_type"    />
+        <result property="backup"    column="backup"    />
+    </resultMap>
+
+    <sql id="selectHelpUserinfoVo">
+        select id, address, owner_name, ower_phone, longitude, latitude, village_id, village_name, ask_type, step_type, backup from help_userinfo
+    </sql>
+
+    <select id="selectHelpUserinfoList" parameterType="HelpUserinfo" resultMap="HelpUserinfoResult">
+        <include refid="selectHelpUserinfoVo"/>
+        <where>  
+            <if test="address != null  and address != ''"> and address like concat('%', #{address}, '%')</if>
+            <if test="ownerName != null  and ownerName != ''"> and owner_name like concat('%', #{ownerName}, '%')</if>
+            <if test="owerPhone != null  and owerPhone != ''"> and ower_phone = #{owerPhone}</if>
+            <if test="villageName != null  and villageName != ''"> and village_name like concat('%', #{villageName}, '%')</if>
+            <if test="askType != null "> and ask_type = #{askType}</if>
+        </where>
+    </select>
+    
+    <select id="selectHelpUserinfoById" parameterType="Long" resultMap="HelpUserinfoResult">
+        <include refid="selectHelpUserinfoVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertHelpUserinfo" parameterType="HelpUserinfo">
+        insert into help_userinfo
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="address != null">address,</if>
+            <if test="ownerName != null">owner_name,</if>
+            <if test="owerPhone != null">ower_phone,</if>
+            <if test="longitude != null">longitude,</if>
+            <if test="latitude != null">latitude,</if>
+            <if test="villageId != null">village_id,</if>
+            <if test="villageName != null">village_name,</if>
+            <if test="askType != null">ask_type,</if>
+            <if test="stepType != null">step_type,</if>
+            <if test="backup != null">backup,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="address != null">#{address},</if>
+            <if test="ownerName != null">#{ownerName},</if>
+            <if test="owerPhone != null">#{owerPhone},</if>
+            <if test="longitude != null">#{longitude},</if>
+            <if test="latitude != null">#{latitude},</if>
+            <if test="villageId != null">#{villageId},</if>
+            <if test="villageName != null">#{villageName},</if>
+            <if test="askType != null">#{askType},</if>
+            <if test="stepType != null">#{stepType},</if>
+            <if test="backup != null">#{backup},</if>
+         </trim>
+    </insert>
+
+    <update id="updateHelpUserinfo" parameterType="HelpUserinfo">
+        update help_userinfo
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="address != null">address = #{address},</if>
+            <if test="ownerName != null">owner_name = #{ownerName},</if>
+            <if test="owerPhone != null">ower_phone = #{owerPhone},</if>
+            <if test="longitude != null">longitude = #{longitude},</if>
+            <if test="latitude != null">latitude = #{latitude},</if>
+            <if test="villageId != null">village_id = #{villageId},</if>
+            <if test="villageName != null">village_name = #{villageName},</if>
+            <if test="askType != null">ask_type = #{askType},</if>
+            <if test="stepType != null">step_type = #{stepType},</if>
+            <if test="backup != null">backup = #{backup},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteHelpUserinfoById" parameterType="Long">
+        delete from help_userinfo where id = #{id}
+    </delete>
+
+    <delete id="deleteHelpUserinfoByIds" parameterType="String">
+        delete from help_userinfo where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

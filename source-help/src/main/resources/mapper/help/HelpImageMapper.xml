@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.source.system.mapper.HelpImageMapper">
+    
+    <resultMap type="HelpImage" id="HelpImageResult">
+        <result property="id"    column="id"    />
+        <result property="helpId"    column="help_id"    />
+        <result property="imageName"    column="image_name"    />
+        <result property="imagePath"    column="image_path"    />
+        <result property="imgUrl"    column="img_url"    />
+        <result property="imageSize"    column="image_size"    />
+    </resultMap>
+
+    <sql id="selectHelpImageVo">
+        select id, help_id, image_name, image_path, img_url, image_size from help_image
+    </sql>
+
+    <select id="selectHelpImageList" parameterType="HelpImage" resultMap="HelpImageResult">
+        <include refid="selectHelpImageVo"/>
+        <where>  
+            <if test="imageName != null  and imageName != ''"> and image_name like concat('%', #{imageName}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectHelpImageById" parameterType="Long" resultMap="HelpImageResult">
+        <include refid="selectHelpImageVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertHelpImage" parameterType="HelpImage" useGeneratedKeys="true" keyProperty="id">
+        insert into help_image
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="helpId != null">help_id,</if>
+            <if test="imageName != null">image_name,</if>
+            <if test="imagePath != null">image_path,</if>
+            <if test="imgUrl != null">img_url,</if>
+            <if test="imageSize != null">image_size,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="helpId != null">#{helpId},</if>
+            <if test="imageName != null">#{imageName},</if>
+            <if test="imagePath != null">#{imagePath},</if>
+            <if test="imgUrl != null">#{imgUrl},</if>
+            <if test="imageSize != null">#{imageSize},</if>
+         </trim>
+    </insert>
+
+    <update id="updateHelpImage" parameterType="HelpImage">
+        update help_image
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="helpId != null">help_id = #{helpId},</if>
+            <if test="imageName != null">image_name = #{imageName},</if>
+            <if test="imagePath != null">image_path = #{imagePath},</if>
+            <if test="imgUrl != null">img_url = #{imgUrl},</if>
+            <if test="imageSize != null">image_size = #{imageSize},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteHelpImageById" parameterType="Long">
+        delete from help_image where id = #{id}
+    </delete>
+
+    <delete id="deleteHelpImageByIds" parameterType="String">
+        delete from help_image where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

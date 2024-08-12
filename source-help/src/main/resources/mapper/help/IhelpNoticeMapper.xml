@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.source.system.mapper.IhelpNoticeMapper">
+    
+    <resultMap type="IhelpNotice" id="IhelpNoticeResult">
+        <result property="id"    column="id"    />
+        <result property="addtime"    column="addtime"    />
+        <result property="title"    column="title"    />
+        <result property="introduction"    column="introduction"    />
+        <result property="publishtime"    column="publishtime"    />
+        <result property="picture"    column="picture"    />
+        <result property="content"    column="content"    />
+        <result property="clicktime"    column="clicktime"    />
+        <result property="clicknum"    column="clicknum"    />
+    </resultMap>
+
+    <sql id="selectIhelpNoticeVo">
+        select id, addtime, title, introduction, publishtime, picture, content, clicktime, clicknum from ihelp_notice
+    </sql>
+
+    <select id="selectIhelpNoticeList" parameterType="IhelpNotice" resultMap="IhelpNoticeResult">
+        <include refid="selectIhelpNoticeVo"/>
+        <where>  
+            <if test="title != null  and title != ''"> and title = #{title}</if>
+            <if test="introduction != null  and introduction != ''"> and introduction = #{introduction}</if>
+            <if test="publishtime != null "> and publishtime = #{publishtime}</if>
+        </where>
+    </select>
+    
+    <select id="selectIhelpNoticeById" parameterType="Long" resultMap="IhelpNoticeResult">
+        <include refid="selectIhelpNoticeVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertIhelpNotice" parameterType="IhelpNotice">
+        insert into ihelp_notice
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="addtime != null">addtime,</if>
+            <if test="title != null and title != ''">title,</if>
+            <if test="introduction != null">introduction,</if>
+            <if test="publishtime != null">publishtime,</if>
+            <if test="picture != null">picture,</if>
+            <if test="content != null and content != ''">content,</if>
+            <if test="clicktime != null">clicktime,</if>
+            <if test="clicknum != null">clicknum,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="addtime != null">#{addtime},</if>
+            <if test="title != null and title != ''">#{title},</if>
+            <if test="introduction != null">#{introduction},</if>
+            <if test="publishtime != null">#{publishtime},</if>
+            <if test="picture != null">#{picture},</if>
+            <if test="content != null and content != ''">#{content},</if>
+            <if test="clicktime != null">#{clicktime},</if>
+            <if test="clicknum != null">#{clicknum},</if>
+         </trim>
+    </insert>
+
+    <update id="updateIhelpNotice" parameterType="IhelpNotice">
+        update ihelp_notice
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="addtime != null">addtime = #{addtime},</if>
+            <if test="title != null and title != ''">title = #{title},</if>
+            <if test="introduction != null">introduction = #{introduction},</if>
+            <if test="publishtime != null">publishtime = #{publishtime},</if>
+            <if test="picture != null">picture = #{picture},</if>
+            <if test="content != null and content != ''">content = #{content},</if>
+            <if test="clicktime != null">clicktime = #{clicktime},</if>
+            <if test="clicknum != null">clicknum = #{clicknum},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteIhelpNoticeById" parameterType="Long">
+        delete from ihelp_notice where id = #{id}
+    </delete>
+
+    <delete id="deleteIhelpNoticeByIds" parameterType="String">
+        delete from ihelp_notice where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
